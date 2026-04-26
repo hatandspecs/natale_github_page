@@ -108,7 +108,7 @@ A Vector Network Analyzer, such as the NanoVNA, is used to verify that the unun 
 ## Using a Dummy Load for Ratio Testing
 To test a 49:1 unun, you must terminate the secondary side with a resistance that represents the antenna wire at resonance. Since the unun is designed to match $50 \Omega$ to approximately $2450 \Omega$ ($50 \times 49$), you use a $2450 \Omega$ or $2500 \Omega$ resistor. 
 
-The resistor should be a non-inductive type. Wire-wound resistors have internal inductance that will provide inaccurate readings at high frequencies. When you connect the VNA to the input and the resistor across the output, the VNA should show an SWR near 1.0:1 across the bands where the transformer is efficient.
+The resistor should be a non-inductive type. Wire-wound resistors have internal inductance that will provide inaccurate readings at high frequencies. When you connect the VNA to the input and the resistor across the output, the VNA should show resistance of approximately $50 \Omenga$ across the frequency range of intended use.
 
 ## Bench SWR vs. Field SWR
 It is important to understand that a dummy load test only verifies the transformer ratio. A low SWR on the bench does not guarantee a low SWR when the unun is attached to a real antenna for several reasons:
