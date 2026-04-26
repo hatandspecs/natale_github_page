@@ -1,0 +1,23 @@
+name: Spell Check
+on: [push, pull_request]
+
+jobs:
+  spellcheck:
+    name: Check Spelling
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Spell Check
+        uses: streetsidesoftware/cspell-action@v6
+        with:
+          config: |
+            {
+              "words": [
+                "unun", "toroid", "EFHW", "KD3CCO", "ferrite", "FT240", "FT140", 
+                "Amidon", "nanovna", "Bifilar", "Reactance", "permeability", 
+                "Inductive", "parasitics", "counterpoise", "SWR"
+              ]
+            }
+          files: "**/*.md"

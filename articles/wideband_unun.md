@@ -67,3 +67,7 @@ The following values are used for these calculations. They have been verified ag
 The target for Inductive Reactance is $200 \Omega$ to $250 \Omega$ at the lowest frequency. In Configuration 1, a 2-turn primary meets this requirement with $227.8 \Omega$. In Configuration 2, the 2-turn primary is too low at $171.9 \Omega$, which can result in efficiency losses and heating on 80 meters.
 
 While 3 turns provide high Inductive Reactance on all bands, the additional wire length often creates SWR issues on 10 meters. Configuration 1 with 2 turns appears to be the most balanced option for this multi-band requirement.
+
+# Applied Engineering
+
+I'm going to start with a hybrid stack of 2x FT240-43 and 1x FT240-52.  I'm using inexpensive 18 AWG lacquered magnet wire
