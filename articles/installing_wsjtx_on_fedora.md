@@ -130,6 +130,21 @@ fi
     Once the script completes, you must **log out and log back in** to your Fedora session. This ensures that the new group permissions for `dialout` and `audio` are applied to your user account.
 
 
-# WSJT-X Application Settings for the Yaseu FTX-1
+# WSJT-X Radio Settings for the Yaseu FTX-1
 
-TBD
+Radio Settings that worked for my FTX-1:
+
+| Parameter | Setting |
+| :--- | :--- |
+| **Rig** | Yaesu FT-991 |
+| **Serial Port** | /dev/ttyUSB0 |
+| **Baud Rate** | 38400 |
+| **Data Bits** | Eight |
+| **Stop Bits** | Two |
+| **Handshake** | None |
+| **Force Control Lines** | no selections |
+| **PTT Method** | CAT |
+| **Port** | /dev/ttyACM0 |
+| **Transmit Audio Source** | Front/Mic |
+| **Mode** | Data |
+| **Split Operation** | Fake it |
