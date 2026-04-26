@@ -1,0 +1,11 @@
+title: Technical Notes & Engineering Log
+description: Documentation and Research
+theme: jekyll-theme-architect # A clean, technical theme
+
+# CRITICAL for project sites:
+baseurl: "/natale_github_page" 
+url: "https://your-username.github.io"
+
+markdown: kramdown
+kramdown:
+  math_engine: mathjax
