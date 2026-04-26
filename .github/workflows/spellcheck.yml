@@ -1,6 +1,10 @@
 name: Spell Check
 on: [push, pull_request]
 
+env:
+  # This fixes the Node.js 20 deprecation warning
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   spellcheck:
     name: Check Spelling
@@ -12,12 +16,6 @@ jobs:
       - name: Run Spell Check
         uses: streetsidesoftware/cspell-action@v6
         with:
-          config: |
-            {
-              "words": [
-                "unun", "toroid", "EFHW", "KD3CCO", "ferrite", "FT240", "FT140", 
-                "Amidon", "nanovna", "Bifilar", "Reactance", "permeability", 
-                "Inductive", "parasitics", "counterpoise", "SWR"
-              ]
-            }
+          # This tells it to look for the file we just made
+          config: 'cspell.json'
           files: "**/*.md"
