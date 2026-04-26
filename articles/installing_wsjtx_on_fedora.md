@@ -110,3 +110,8 @@ echo "-------------------------------------------------------"
     `./configure_wsjtx.sh`
 4.  **Finalize Permissions:**
     Once the script completes, you must **log out and log back in** to your Fedora session. This ensures that the new group permissions for `dialout` and `audio` are applied to your user account.
+
+
+# WSJT-X Application Settings for the Yaseu FTX-1
+
+TBD
