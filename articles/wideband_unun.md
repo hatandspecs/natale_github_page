@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Designing a Wideband 49:1 Unun
+title: Designing Multiband 75m to 10m EFHW and Wide-band 49:1 Unun
 category: article
 date: 2026-04-26
 ---
