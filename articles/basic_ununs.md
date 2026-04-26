@@ -1,4 +1,10 @@
-# Basic Unun Design Considerations
+---
+layout: default
+title: Designing a Basic 49:1 Unun
+category: article
+---
+
+# Designing a Basic 49:1 Unun
 
 This document outlines the material properties and design principles required to build a functional 49:1 unun (unbalanced to unbalanced) transformer for an end-fed half-wave antenna.
 
