@@ -35,44 +35,53 @@ The following script automates the installation and configuration described abov
 #!/bin/bash
 set -e
 
-echo "--- WSJT-X Stable v2.7.x: Full-Stack Configurator ---"
+# --- CONFIGURATION ---
+# Target the stable General Availability (GA) version
+STABLE_WSJTX="wsjtx"
+echo "--- WSJT-X STABLE CONFIGURATOR for KD3CCO ---"
 
 # 1. HARDWARE & SPACE DETECTION
 echo "Step 1: Analyzing system..."
 CPU_CORES=$(nproc)
-echo "Detected: ${CPU_CORES} CPU Cores."
+echo "Detected: ${CPU_CORES} CPU Cores. Ready for decoding."
 
 # 2. THE TOTAL RESET
-echo "Step 2: Purging any existing pre-release or broken versions..."
+echo "Step 2: Removing experimental/pre-release versions..."
+# Unlocking first ensures we can actually remove it
 sudo dnf versionlock delete wsjtx 2>/dev/null || true
 sudo dnf remove -y wsjtx hamlib hamlib-utils hamlib-devel 2>/dev/null || true
 sudo dnf clean all
 
 # 3. INSTALL STABLE VERSION
-echo "Step 3: Installing Stable WSJT-X..."
-sudo dnf install -y wsjtx chrony pavucontrol 'dnf-command(versionlock)'
+echo "Step 3: Installing Stable WSJT-X and core Hamlib..."
+# Removed hamlib-utils as it is now integrated into hamlib
+sudo dnf install -y wsjtx hamlib chrony pavucontrol 'dnf-command(versionlock)'
 
-# 4. UPDATE HAMLIB
-echo "Step 4: Updating Hamlib to the latest available version..."
-sudo dnf install -y hamlib hamlib-utils hamlib-devel
-sudo dnf upgrade -y hamlib hamlib-utils
+# 4. ENSURE LATEST RIG DEFINITIONS
+echo "Step 4: Ensuring Hamlib is up to date..."
+# This ensures you have the latest Yaesu FTX-1 definitions
+sudo dnf upgrade -y hamlib
 
 # 5. VERSION LOCK
-echo "Step 5: Locking WSJT-X version..."
+# This prevents dnf update from accidentally pulling in a future beta/RC version
+echo "Step 5: Locking WSJT-X to the current stable release..."
 sudo dnf versionlock add wsjtx
 
 # 6. PERMISSIONS & RIG CONTROL FIX
 echo "Step 6: Configuring USB/Serial and masking conflicts..."
+# dialout for CAT control; audio for PipeWire/Alsa access
 sudo usermod -a -G dialout,audio $USER
+# Disable brltty (common conflict with USB-to-Serial adapters)
 sudo systemctl mask brltty || true
 
-# 7. TIME SYNC
-echo "Step 7: Calibrating sub-second time accuracy..."
+# 7. TIME SYNC (The 'FT8 Heartbeat')
+echo "Step 7: Calibrating sub-second time accuracy via Chronyd..."
 sudo systemctl enable --now chronyd
 sudo chronyc -a makestep
 
 # 8. AUDIO ENGINE OPTIMIZATION (PipeWire Fix)
-echo "Step 8: Preventing audio 'Sleep Mode'..."
+# This prevents your rig's audio from 'sleeping' during RX/TX gaps
+echo "Step 8: Applying PipeWire idle-suspend fix..."
 mkdir -p ~/.config/wireplumber/wireplumber.conf.d
 cat <<EOF > ~/.config/wireplumber/wireplumber.conf.d/50-no-suspend.conf
 monitor.alsa.rules = [
@@ -84,16 +93,25 @@ monitor.alsa.rules = [
 EOF
 
 # 9. OS GUI INTEGRATION
-echo "Step 9: Finalizing OS Menu shortcut..."
+echo "Step 9: Finalizing menu shortcuts..."
 mkdir -p ~/.local/share/applications
 if [ -f /usr/share/applications/wsjtx.desktop ]; then
     cp /usr/share/applications/wsjtx.desktop ~/.local/share/applications/
 fi
 
 echo "-------------------------------------------------------"
-echo "INSTALL SUCCESSFUL: KD3CCO STATION READY"
+echo "STABLE INSTALL COMPLETE: KD3CCO STATION READY"
 echo "Current Hamlib Version: $(rigctl --version | head -n 1)"
 echo "-------------------------------------------------------"
+echo "1. REBOOT/LOGOUT: Required for USB 'dialout' permissions."
+echo "2. VERIFY SYNC: Run 'chronyc tracking' to ensure < 100ms offset."
+echo "-------------------------------------------------------"
+
+read -p "Launch WSJT-X and Volume Control now? (y/n) " choice
+if [[ "$choice" =~ ^[Yy]$ ]]; then
+    wsjtx &
+    pavucontrol &
+fi
 ```
 
 ---
