@@ -13,10 +13,8 @@ I am a new Ham Radio operator, as of December 2025. I am in the process of tinke
 
 # Technical Articles
 
-| Date | Article Title |
-| :--- | :--- |
 {% for page in site.pages %}
   {% if page.category == "article" %}
-| {{ page.date | date: "%b %d, %Y" }} | [{{ page.title }}]({{ page.url | relative_url }}) |
+* **{{ page.date | date: "%b %d, %Y" }}**: [{{ page.title }}]({{ page.url | relative_url }})
   {% endif %}
 {% endfor %}
