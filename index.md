@@ -15,6 +15,6 @@ I am a new Ham Radio operator, as of December 2025. I am in the process of tinke
 
 {% for page in site.pages %}
   {% if page.category == "article" %}
-* **{{ page.date | date: "%b %d, %Y" }}**: [{{ page.title }}]({{ page.url | relative_url }})
+* {% if page.date %}**{{ page.date | date: "%b %d, %Y" }}**: {% endif %}[{{ page.title }}]({{ page.url | relative_url }})
   {% endif %}
 {% endfor %}
