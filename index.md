@@ -4,7 +4,7 @@ title: Home
 ---
 
 
-# Welcome to my Technical Page
+# [Welcome to my Technical Page](https://hatandspecs.github.io/natale_github_page/)
 
 I am a new Ham Radio operator, as of December 2025. I am in the process of tinkering, making mistakes, and trying to rediscover a lot of information that experienced hams throughout the ages already know. I am doing this as a learning exercise and will attempt to keep decent documentation along the way.
 
@@ -39,8 +39,7 @@ To assist in calculations, the following table provides the Inductance Factor ($
 ### Finding Inductance Factor ($A_L$) Values
 To find the correct Inductance Factor for a core, you must cross-reference the physical size (e.g., FT240) with the material mix (e.g., 43). Larger cores have a larger magnetic cross-section and therefore higher Inductance Factor values for the same material. You can find these data tables at the following manufacturer sites:
 
-* [Amidon Ferrite Toroid Specifications](https://www.amidoncorp.com/product_images/specifications/1-02.pdf)
-* [Fair-Rite Material Data Sheets](https://www.fair-rite.com/materials/)
+* [Toroid Specifications](https://toroids.info/FT240-43.php){:target="_blank"}
 
 ### Inductance Calculation
 You calculate the total inductance ($L$) using the following formula:
