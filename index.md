@@ -39,7 +39,9 @@ To assist in calculations, the following table provides the Inductance Factor ($
 ### Finding Inductance Factor ($A_L$) Values
 To find the correct Inductance Factor for a core, you must cross-reference the physical size (e.g., FT240) with the material mix (e.g., 43). Larger cores have a larger magnetic cross-section and therefore higher Inductance Factor values for the same material. You can find these data tables at the following manufacturer sites:
 
-* [Toroid Specifications](https://toroids.info/FT240-43.php){:target="_blank"}
+* [Mix 43 Toroid Specifications (Amidon)](https://www.amidoncorp.com/43-material-ferrite-toroids/)
+* [Mix 52 Toroid Specifications (Amidon)](https://www.amidoncorp.com/52-material-ferrite-toroids/)
+* [Mix 61 Toroid Specifications (Amidon)](https://www.amidoncorp.com/61-material-ferrite-toroids/)
 
 ### Inductance Calculation
 You calculate the total inductance ($L$) using the following formula:
