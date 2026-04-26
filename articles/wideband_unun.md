@@ -70,4 +70,4 @@ While 3 turns provide high Inductive Reactance on all bands, the additional wire
 
 # Applied Engineering
 
-I'm going to start with a hybrid stack of 2x FT240-43 and 1x FT240-52.  I'm using inexpensive 18 AWG lacquerrrrred magnet wire
+I'm going to start with a hybrid stack of 2x FT240-43 and 1x FT240-52.  I'm using inexpensive 18 AWG lacquered magnet wire

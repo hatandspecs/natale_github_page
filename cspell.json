@@ -4,7 +4,7 @@
   "words": [
     "unun", "toroid", "EFHW", "KD3CCO", "ferrite", "FT240", "FT140", 
     "Amidon", "nanovna", "Bifilar", "Reactance", "permeability", 
-    "Inductive", "parasitics", "counterpoise", "SWR", "natale", "KD3CCO"
+    "Inductive", "parasitics", "counterpoise", "SWR", "natale", "KD3CCO", "Multiband", "feedpoint"
   ],
   "ignorePaths": [
     "node_modules/**",
