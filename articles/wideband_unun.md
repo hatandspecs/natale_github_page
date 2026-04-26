@@ -6,6 +6,7 @@ date: 2026-04-26
 ---
 
 # Designing a Wideband 49:1 Unun
+**Published on:** {{ page.date | date: "%B %d, %Y" }}
 
 The End-Fed Half-Wave (EFHW) antenna is a common choice for amateur radio because it allows for multi-band operation with one wire. The 49:1 impedance transformer is the critical component of this system. It transforms the feedpoint impedance of approximately 2500 $\Omega$ to the 50 $\Omega$ impedance expected by the radio. The goal of this project is to design a transformer that covers the 80 meter phone band through 10 meters with acceptable efficiency for 100W or under.
 

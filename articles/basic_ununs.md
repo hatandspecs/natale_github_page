@@ -6,6 +6,7 @@ date: 2026-04-26
 ---
 
 # Designing a Basic 49:1 Unun
+**Published on:** {{ page.date | date: "%B %d, %Y" }}
 
 This document outlines the material properties and design principles required to build a functional 49:1 unun (unbalanced to unbalanced) transformer for an end-fed half-wave antenna.
 
