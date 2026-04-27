@@ -148,3 +148,14 @@ Radio Settings that worked for my FTX-1:
 | **Transmit Audio Source** | Front/Mic |
 | **Mode** | Data |
 | **Split Operation** | Fake it |
+
+
+# Results
+
+WSJT-X runs.  CAT control over USB-C can control my VFO, transmit modes, and PTT.  The audio input and output (over the same USB-C) sends and recieves audio to the radio.  Some experimentation following WSJT-X documentation was needed to set the audio levels.  Note that there are many places in the combined system that affect audio levels (input and output). Some of these include the "PWR" setting in WSJT-X (affects audio output level), your computer operation system's volume mixer (affects output and input audio levels), and settings on your radio like USB Gain (affects input audio level to the radio).
+
+Here is a screenshot of WSJT-X running on my radio in WSPR mode.
+
+<img src="{{ '/assets/images/wspr-wsjtx-2026-04-26 16-51.png' | relative_url }}" alt="WSJT-X Screenshot" width="600">
+
+
