@@ -62,7 +62,8 @@ As soon as I hooked up the radio, I realized I had dropped right into the middle
 
 <img src="{{ '/assets/images/rigid_v_dipole/6.jpeg' | relative_url }}" alt="bands come alive" width="600">
 
-<img src="{{ '/assets/images/rigid_v_dipole/1.jpeg' | relative_url }}" alt="dx contacts" width="600">
+
+<img src="{{ '/assets/images/rigid_v_dipole/1.png' | relative_url }}" alt="dx contacts" width="600">
 
 ---
 
