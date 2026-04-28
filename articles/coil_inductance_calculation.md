@@ -5,7 +5,7 @@ category: article
 date: 2026-04-28
 ---
 
-As I experiment with antenna designs, I'm finding a need to be able to estimate the inductance of a coil. 
+As I experiment with antenna designs, I'm finding a need to be able to estimate the inductance of a coil.
 
 ## Calculating the Inductance of a Coil
 To calculate the inductance of a single-layer air-core coil, the most common and reliable approximation is **Wheeler’s Formula**. 
@@ -21,7 +21,7 @@ Where:
 * $n$ = Number of turns
 
 ### The Calculation
-Given a mystery coil I purchased online, I measure thesedimensions:
+Given a mystery coil I purchased online, I measured these dimensions:
 * **Diameter ($d$):** 1.6 in
 * **Length ($l$):** 1.15 in
 * **Turns ($n$):** 20
