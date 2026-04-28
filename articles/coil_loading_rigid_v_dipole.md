@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Experiment: First Attempt at a Shortened Rigid V-Dipole for 40m
+title: First Attempt at a Shortened Rigid V-Dipole for 40m
 category: article
 date: 2026-04-27
 ---
@@ -21,7 +21,7 @@ To operate on 40m with physically shortened elements, I introduced inductive loa
 * **Loading:** Dual non-adjustable base-loading coils **~20 turns** installed at the hub.  I will measure these at some point to see what the actual inductance is.
 * **Matching:** A hastily constructed adjustable Beta match (shunt inductor) was added to transform the low radiation resistance up to **50Ω**.
 
-<img src="{{ '/assets/images/coil_loading_rigid_v_dipole/setup_with_beta_match.jpg' | relative_url }}" alt="setup with beta match" width="600">
+<img src="{{ '/assets/images/coil_loading_rigid_v_dipole/setup_wtih_beta_match.jpg' | relative_url }}" alt="setup with beta match" width="600">
 
 
 ---
