@@ -17,6 +17,17 @@ The EFHW transformer in question promises useable SWR on amateur bands from 75m 
 * **Winding Style:** A "twisted pair" start for the first 2 turns to maximize coupling, followed by a split-secondary winding. The first 5 secondary turns are wound clockwise (around the circumference of the core) and spaced tightly together (touching). After a crossover, the final 8 turns are wound counter-clockwise (around the circumference of the core) and spaced slightly apart. The entire winding occupies less than half of the core circumference.
 * **Compensation:** A **120 pF** ceramic capacitor labeled 121 across the primary.
 
+I made a DIY replica of the device with some known FT240-43 toroids that I had. It is wound the same way as the commercial Unun. I added a 120pF capacitor. My DIY Unun is wound with AWG 18 wire, whereas the commercial unit is wound with approximately AWG 16 wire.  Here are some pictures of my DIY replica, to illustrate the winding style.  In a later section I will measure it and compare it to the commerical Unun.
+
+> DIY Unun, View 1
+<img src="{{ '/assets/images/analyzing_an_unknown_unun/diy_view1.jpg' | relative_url }}" alt="DIY Unun, View 1" width="600">
+
+> DIY Unun, View 2
+<img src="{{ '/assets/images/analyzing_an_unknown_unun/diy_view2.jpg' | relative_url }}" alt="sDIY Unun, View 2" width="600">
+
+> DIY Unun, View 3
+<img src="{{ '/assets/images/analyzing_an_unknown_unun/diy_view3.jpg' | relative_url }}" alt="DIY Unun, View 3" width="600">
+
 ---
 
 ### Measurements with a 2500 Ohm Dummy Load
@@ -33,6 +44,9 @@ The following table details the SWR and complex impedance measured at the primar
 | **28.453** | 1.59 | 70.9 + 18.3j $\Omega$ |
 
 These loaded measurements provide the baseline for our performance analysis. While the SWR remains largely usable, being under 2.1:1 for most of the range, the shifting real and imaginary components suggest that the transformation mechanism is evolving as frequency increases.
+
+> Commerical Unun, 2500 Ohms Loaded
+<img src="{{ '/assets/images/analyzing_an_unknown_unun/commercial_loaded.jpg' | relative_url }}" alt="Commerical Unun, 2500 Ohms Loaded" width="600">
 
 ---
 
@@ -51,6 +65,79 @@ $$X_L = \frac{1}{|B_{net} - B_C|}$$
 | **7.186** | 36.1 - 92.4j | +0.00939 S | 0.00542 S | **251.9 $\Omega$** |
 | **14.243** | 6.74 - 32.5j | +0.02948 S | 0.01074 S | **53.4 $\Omega$** |
 | **28.435** | 8.03 + 10.1j | -0.06065 S | 0.02144 S | **12.2 $\Omega$** |
+
+> Commerical Unun, Unloaded
+<img src="{{ '/assets/images/analyzing_an_unknown_unun/commercial_unloaded.jpg' | relative_url }}" alt="Commerical Unun, Unloaded" width="600">
+
+### Detailed Calculation Steps and Example
+To calculate the primary inductive reactance when a capacitor is in parallel, we have to move from the world of **Impedance ($Z$)** to the world of **Admittance ($Y$)**. 
+
+The fundamental problem is that your NanoVNA measures everything in series ($R + jX$), but components in parallel do not add up linearly in that format. They add up linearly as Admittances.
+
+#### 1. The Components of Admittance
+Admittance ($Y$) is the reciprocal of Impedance ($Z$). Just as impedance has a real part (resistance) and an imaginary part (reactance), admittance is split into two parts:
+
+$$Y = \frac{1}{Z} = G + jB$$
+
+* **$G$ (Conductance):** The real part, measured in Siemens (S). It represents how easily current flows through the resistive portion of the circuit.
+* **$jB$ (Susceptance):** The imaginary part, also measured in Siemens. This represents the "ease" of current flow through the reactive components (inductors and capacitors).
+
+
+
+#### 2. Why use Susceptance?
+In a series circuit, you add reactances ($X_{total} = X_L + X_C$). In a **parallel** circuit, you add susceptances:
+
+$$B_{total} = B_C + B_L$$
+
+This additive property is what allows us to mathematically "peel away" the capacitor to see the inductor hiding underneath.
+
+---
+
+#### 3. Step-by-Step Susceptance Calculation
+
+##### Step A: Convert Series Impedance to Admittance
+If your NanoVNA gives you a reading of $Z = R + jX$, you convert it to Admittance using the complex reciprocal:
+
+$$Y = \frac{1}{R + jX} = \frac{R}{R^2 + X^2} - j\frac{X}{R^2 + X^2}$$
+
+From this, we extract the **Net Susceptance ($B_{net}$)**, which is the coefficient of the imaginary part. 
+
+> **Crucial Sign Note:** If your $X$ is negative (capacitive), the $B_{net}$ becomes positive. If your $X$ is positive (inductive), the $B_{net}$ becomes negative.
+
+##### Step B: Calculate the Capacitor's Susceptance ($B_C$)
+Since the capacitor value is known (120 pF), we calculate its individual contribution to the total susceptance. The susceptance of a capacitor is always positive:
+
+$$B_C = \omega C = 2 \pi f C$$
+
+##### Step C: Isolate the Inductive Susceptance ($B_L$)
+We know that the total measured susceptance is the sum of the two components. To find the inductor's contribution, we subtract the capacitor's effect:
+
+$$B_L = B_{net} - B_C$$
+
+
+
+##### Step D: Convert back to Inductive Reactance ($X_L$)
+Once you have isolated $B_L$, you can find the actual reactance of the copper windings. Inductive reactance is the reciprocal of the magnitude of its susceptance:
+
+$$X_L = \frac{1}{|B_L|}$$
+
+---
+
+#### 4. Worked Example (Using the 3.8 MHz data)
+1.  **Measured Impedance ($Z$):** $335 + 70.2j$ $\Omega$.
+2.  **Calculate $Y$:** $$Y = \frac{1}{335 + 70.2j} \approx 0.00286 - 0.00060j \text{ S}$$
+    So, $B_{net} = -0.00060$ S.
+3.  **Calculate $B_C$ for 120 pF:**
+    $$B_C = 2 \pi (3.803 \times 10^6) (120 \times 10^{-12}) \approx 0.00287 \text{ S}$$
+4.  **Find $B_L$:**
+    $$B_L = -0.00060 - 0.00287 = -0.00347 \text{ S}$$
+5.  **Find $X_L$:**
+    $$X_L = \frac{1}{|-0.00347|} \approx 288.2\ \Omega$$
+
+#### 5. Summary of the Physical Meaning
+The reason the susceptance calculation is so powerful is that it reveals the "hidden" inductor. 
+
+At 3.8 MHz, the NanoVNA measured a slightly inductive load ($+70.2j$). However, after the math, we see the actual winding has a much higher reactance of **288.2 $\Omega$**. The 120 pF capacitor was "fighting" the inductor, cancelling out most of its reactance and leaving only a small remainder for the VNA to see. This calculation is essential for understanding the true magnetizing impedance of the core without having to physically desolder components.
 
 ---
 
@@ -101,6 +188,18 @@ If the inductive reactance is only 12.2 $\Omega$ at 10m, why is the SWR only 1.5
 Is an unun with 12.2 $\Omega$ of $X_L$ on 10m appropriate?
 1.  **For SWR:** It is highly effective. The design cheats the physics of the ferrite to provide a usable match.
 2.  **For Efficiency:** It is less than ideal. Because $X_L$ is so low, significant current flows through a core that has become resistive. This leads to **thermal dissipation**. In high-duty cycle modes, this energy becomes heat.
+
+
+## Part 3: Replicating the Unun build with 2x known FT240-43
+
+
+
+> DIY Unun, 2500 Ohms Loaded
+<img src="{{ '/assets/images/analyzing_an_unknown_unun/diy_loaded.jpg' | relative_url }}" alt="DIY Unun, 2500 Ohms Loaded" width="600">
+
+> DIY Unun, unloaded
+<img src="{{ '/assets/images/analyzing_an_unknown_unun/diy_unloaded.jpg' | relative_url }}" alt="DIY Unun, unloaded" width="600">
+
 
 ### Final Technical Summary
 This unun is a classic example of broadband engineering trade-offs. It prioritizes a low SWR across the entire HF spectrum by utilizing a hybrid design consisting of a magnetic transformer on the low bands and a transmission line transformer on the high bands. It remains a functional solution, provided the user respects the thermal limits of the core.
