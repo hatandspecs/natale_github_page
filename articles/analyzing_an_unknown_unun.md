@@ -72,7 +72,7 @@ $$X_L = \frac{1}{|B_{net} - B_C|}$$
 ### Detailed Calculation Steps and Example
 To calculate the primary inductive reactance when a capacitor is in parallel, we have to move from the world of **Impedance ($Z$)** to the world of **Admittance ($Y$)**. 
 
-The fundamental problem is that your NanoVNA measures everything in series ($R + jX$), but components in parallel do not add up linearly in that format. They add up linearly as Admittances.
+The fundamental problem is that the NanoVNA measures everything in series ($R + jX$), but components in parallel do not add up linearly in that format. They add up linearly as Admittances.
 
 #### 1. The Components of Admittance
 Admittance ($Y$) is the reciprocal of Impedance ($Z$). Just as impedance has a real part (resistance) and an imaginary part (reactance), admittance is split into two parts:
@@ -85,7 +85,7 @@ $$Y = \frac{1}{Z} = G + jB$$
 
 
 #### 2. Why use Susceptance?
-In a series circuit, you add reactances ($X_{total} = X_L + X_C$). In a **parallel** circuit, you add susceptances:
+In a series circuit, add reactances ($X_{total} = X_L + X_C$). In a **parallel** circuit, add susceptances:
 
 $$B_{total} = B_C + B_L$$
 
@@ -96,13 +96,13 @@ This additive property is what allows us to mathematically "peel away" the capac
 #### 3. Step-by-Step Susceptance Calculation
 
 ##### Step A: Convert Series Impedance to Admittance
-If your NanoVNA gives you a reading of $Z = R + jX$, you convert it to Admittance using the complex reciprocal:
+If the NanoVNA gives a reading of $Z = R + jX$, convert it to Admittance using the complex reciprocal:
 
 $$Y = \frac{1}{R + jX} = \frac{R}{R^2 + X^2} - j\frac{X}{R^2 + X^2}$$
 
 From this, we extract the **Net Susceptance ($B_{net}$)**, which is the coefficient of the imaginary part. 
 
-> **Crucial Sign Note:** If your $X$ is negative (capacitive), the $B_{net}$ becomes positive. If your $X$ is positive (inductive), the $B_{net}$ becomes negative.
+> **Crucial Sign Note:** If $X$ is negative (capacitive), the $B_{net}$ becomes positive. If $X$ is positive (inductive), the $B_{net}$ becomes negative.
 
 ##### Step B: Calculate the Capacitor's Susceptance ($B_C$)
 Since the capacitor value is known (120 pF), we calculate its individual contribution to the total susceptance. The susceptance of a capacitor is always positive:
