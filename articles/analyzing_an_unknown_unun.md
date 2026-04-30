@@ -158,7 +158,7 @@ Using the 3.8 MHz data, where the inductive component is most stable, we can est
 2.  **$A_L$ Calculation:** Since $L = A_L \cdot N^2$ (with $N=2$):
     $$A_L = \frac{12,070 \text{ nH}}{4} \approx 3,017 \text{ nH/turn}^2$$
 
-For a stack of two FT240 cores, where the total $A_e$ is doubled while $l_e$ remains constant, an $A_L$ of 3,017 points toward **Type 43 Ferrite**. While nominal single-core values are approximately 1075 nH/turn$^2$, permeability often rises at the lower end of the HF spectrum before the core becomes predominantly resistive.
+For a stack of two FT240 cores, where the total $A_e$ is doubled while $l_e$ remains constant, an $A_L$ of 3,017 points toward **Type 43 Ferrite**. While nominal single-core values are approximately 1075 nH/turn$^2$, permeability often rises at the lower end of the HF spectrum before the core becomes predominantly resistive. However, there is enough of a discrepency between the expected 2150 nH/turn$^2$ and the 3,017 computed from my measurements that the possibility of a hybrid core stack can not be excluded definitively. For example, the commercial unit could be utilizing a hybrid core stack of Mix 31 and Mix 43 (or some other combination).
 
 ---
 
@@ -190,16 +190,109 @@ Is an unun with 12.2 $\Omega$ of $X_L$ on 10m appropriate?
 2.  **For Efficiency:** It is less than ideal. Because $X_L$ is so low, significant current flows through a core that has become resistive. This leads to **thermal dissipation**. In high-duty cycle modes, this energy becomes heat.
 
 
-## Part 3: Replicating the Unun build with 2x known FT240-43
+## Part 3: The DIY Replica — Measurements and Calculations
 
+To benchmark the commercial unit, I constructed a DIY replica using two FT240-43 toroids purchased from DigiKey. This unit was wound using the same 2:15 unconventional geometry. A 120 pF compensation capacitor was placed across the primary. While the commercial unit uses approximately AWG 16 wire, this replica utilizes AWG 18.
+
+### Measurements with a 2500 $\Omega$ Dummy Load
+The following data represents the loaded performance of the DIY replica:
+
+| Frequency (MHz) | SWR | Complex Impedance ($R + jX$) |
+| :--- | :--- | :--- |
+| **3.803** | 1.13 | 47.6 - 5.40j $\Omega$ |
+| **7.186** | 1.60 | 34.9 - 12.9j $\Omega$ |
+| **14.243** | 2.21 | 22.7 - 1.62j $\Omega$ |
+| **28.453** | 2.08 | 103.0 - 6.96j $\Omega$ |
 
 
 > DIY Unun, 2500 Ohms Loaded
 <img src="{{ '/assets/images/analyzing_an_unknown_unun/diy_loaded.jpg' | relative_url }}" alt="DIY Unun, 2500 Ohms Loaded" width="600">
 
+
+---
+
+### Measurements and Primary Reactance ($X_L$) Calculation
+The primary inductive reactance was isolated by measuring the unit without a load. Using the admittance model ($Y = 1/Z = G + jB$), the 120 pF capacitor's susceptance ($B_C$) was subtracted from the net susceptance ($B_{net}$) to find the primary inductive reactance ($X_L$).
+
+| Frequency (MHz) | No-Load Impedance ($Z$) | Net Susceptance ($B_{net}$) | **Calculated $X_L$** |
+| :--- | :--- | :--- | :--- |
+| **3.803** | 163 - 158j | +0.00307 S | **4,950.0 $\Omega$** |
+| **7.186** | 22.4 - 76j | +0.01211 S | **149.4 $\Omega$** |
+| **14.243** | 5.59 - 28.4j | +0.03389 S | **43.2 $\Omega$** |
+| **28.453** | 8.03 + 16.7j | -0.04865 S | **14.3 $\Omega$** |
+
+
 > DIY Unun, unloaded
 <img src="{{ '/assets/images/analyzing_an_unknown_unun/diy_unloaded.jpg' | relative_url }}" alt="DIY Unun, unloaded" width="600">
 
+---
 
-### Final Technical Summary
-This unun is a classic example of broadband engineering trade-offs. It prioritizes a low SWR across the entire HF spectrum by utilizing a hybrid design consisting of a magnetic transformer on the low bands and a transmission line transformer on the high bands. It remains a functional solution, provided the user respects the thermal limits of the core.
+### The Resonance Trap: Understanding the 4,950 $\Omega$ Anomaly
+
+One of the most striking data points in the DIY replica is the primary inductive reactance ($X_L$) of **4,950 $\Omega$** at 3.803 MHz. While this number suggests an incredibly high magnetizing impedance, it is actually a mathematical artifact of **parallel resonance**. 
+
+In an unun with a compensation capacitor, the circuit acts as a parallel resonant tank. The primary winding (an inductor) and the 120 pF capacitor are in a "tug-of-war" on the imaginary axis of the admittance plane. Their relationship is defined by their **susceptance ($B$)**, which is the imaginary component of admittance ($Y$).
+
+#### The Physics of Cancellation
+In a parallel circuit, total susceptance is the sum of the individual components. Because inductive susceptance ($B_L$) and capacitive susceptance ($B_C$) have opposite signs, they effectively subtract from one another:
+
+$$B_{net} = B_C - B_L$$
+
+
+At 3.803 MHz, the DIY replica hits a specific state where these two values are nearly identical:
+* **Capacitive Susceptance ($B_C$):** $\approx 0.00287$ Siemens
+* **Inductive Susceptance ($B_L$):** $\approx 0.00307$ Siemens
+
+Because these two numbers are so close, the **net susceptance ($B_{net}$)** becomes a very small value (approximately 0.00020 Siemens). When we calculate the inductive reactance ($X_L$) by taking the reciprocal of the susceptance, the result is an "apparent" reactance that explodes toward infinity:
+
+$$X_L = \frac{1}{|B_{net} - B_C|} \approx 4,950\ \Omega$$
+
+#### Apparent vs. Physical Reactance
+It is vital to distinguish between **apparent reactance** and **physical reactance**. The 4,950 $\Omega$ value is the apparent reactance seen by the NanoVNA due to the cancellation effect of the capacitor. It does not mean the ferrite core has suddenly become four times stronger at 3.8 MHz. 
+
+In fact, the high sensitivity of this number is a telltale sign of a lower-inductance core. Because the DIY unit has less physical inductance than the commercial unit, its natural resonant frequency was pushed down directly into the 80 meter band. The commercial unit, possessing higher physical inductance, stays far enough away from this resonance point to provide a stable, "real" measurement of its primary reactance ($X_L = 288.4\ \Omega$).
+
+This resonance trap serves as a reminder that at the lower end of the HF spectrum, the compensation capacitor can heavily mask the true performance of the ferrite. To find the real "inductive backbone" of the transformer, one must look at frequencies further away from the resonant peak, such as the 7.1 MHz data, where the core's physical properties are more clearly visible.
+
+### Estimating $A_L$
+The $A_L$ value relates the physical inductance to the core geometry and permeability via the following equation:
+
+$$A_L = \frac{L}{N^2} = \frac{\mu_0 \mu_i A_e}{l_e}$$
+
+Using the 7.186 MHz data for the DIY replica ($N=2$):
+1. **Inductance ($L$):** $L = X_L / (2 \pi f) \approx 3.31\ \mu\text{H}$
+2. **$A_L$ Estimate:** $A_L = 3310\text{ nH} / 4 \approx \mathbf{827.5\text{ nH/turn}^2}$
+
+---
+
+## Part 4: Comparative Analysis
+
+A comparison of the measurements from the commercial unit and the DIY replica reveals several interesting performance trends.
+
+### Transformation and SWR
+Both units achieved a usable SWR across the HF spectrum with a 2500 $\Omega$ load. At 3.803 MHz, the DIY replica showed a slightly lower SWR (1.13) compared to the commercial unit (1.21). However, the DIY unit maintained a capacitive imaginary component across most of the lower and middle bands, whereas the commercial unit transitioned from inductive to capacitive reactance as frequency increased.
+
+### Inductive Reactance Trends
+The most significant divergence occurs in the calculated primary inductive reactance ($X_L$).
+
+* **Low-Band Behavior (3.8 MHz):** The DIY replica shows an exceptionally high $X_L$ of 4,950 $\Omega$ at 3.803 MHz. This value is a result of parallel resonance, where the inductive susceptance of the windings and the capacitive susceptance of the 120 pF capacitor nearly cancel each other out. The commercial unit, by contrast, measured a more stable $X_L$ of 288.4 $\Omega$ at this frequency.
+* **Mid-Band Performance (7.1 MHz):** When moving away from the resonance point, the commercial unit provides higher inductive reactance ($X_L = 251.9\ \Omega$) compared to the DIY replica ($X_L = 149.4\ \Omega$). This indicates that the commercial unit possesses higher physical inductance than the DIY build.
+* **High-Band Convergence (28 MHz):** On the 10 meter band, the $X_L$ of both units converged to a range between 12 $\Omega$ and 14 $\Omega$.
+
+
+
+### Comparison of Estimated $A_L$
+The calculated $A_L$ values provide a clear numerical contrast between the two core stacks.
+
+| Metric | Commercial Unit | DIY Replica |
+| :--- | :--- | :--- |
+| **Estimated $A_L$** | $\approx$ 3,017 nH/turn$^2$ | $\approx$ 827.5 nH/turn$^2$ |
+| **Inductance ($L$) at 7.1 MHz** | $\approx$ 5.57 $\mu$H | $\approx$ 3.31 $\mu$H |
+
+### Summary of Differences
+The data illustrates that while the winding geometry is identical, the commercial unit maintains higher inductive reactance across the majority of the HF spectrum. The DIY unit hits a parallel resonance point within the 80 meter band, causing a peak in apparent reactance that is not present in the commercial unit. By 28 MHz, the reactive contribution of the cores in both units becomes nearly identical, suggesting that the transformation at the highest frequencies is dominated by the winding geometry rather than the inductive properties of the core.
+
+
+## TBD Part 5 - A DIY Hybrid Stack of Mix 31 and Mix 43
+
+## TBD Part 6 - Can I do something useful with Mix 52?
